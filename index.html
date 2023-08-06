@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Clock with Rose Background</title>
+    <style>
+        /* Default clock styles */
+        .clock {
+            position: relative;
+            border: 5px solid;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover; /* Ensure the background image covers the entire clock */
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .second {
+            transition: transform 1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="clock" :style="{ width: size + 'px', height: size + 'px', borderColor: borderColor, backgroundColor: bgColor, opacity: clockOpacity, backgroundImage: 'url(' + bgImage + ')' }">
+            <div class="hand hour" :style="{ width: '6px', height: size * 0.25 + 'px', backgroundColor: hourColor, transform: 'rotate(' + hourRotation + 'deg)', opacity: handOpacity }"></div>
+            <div class="hand minute" :style="{ width: '4px', height: size * 0.35 + 'px', backgroundColor: minuteColor, transform: 'rotate(' + minuteRotation + 'deg)', opacity: handOpacity }"></div>
+            <div class="hand second" :style="{ width: '2px', height: size * 0.45 + 'px', backgroundColor: secondColor, transform: 'rotate(' + secondRotation + 'deg)', opacity: handOpacity }"></div>
+			<div style="position: absolute; top: 20%; left: 47%; transform: rotate(-270deg) translate(0px, 0px) rotate(270deg); color: white; font-weight: bold;">12</div><div style="position: absolute; top: 70%; left: 49%; transform: rotate(-270deg) translate(0px, 0px) rotate(270deg); color: white; font-weight: bold;">6</div>
+<div style="position: absolute; top: 45%; left: 47%; transform: rotate(-270deg) translate(0px, 0px) rotate(270deg); color: white; font-weight: bold;">❂</div>
+
+
+        </div>
+    </div>
+
+    <!-- Include Vue Library -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    
+    <script>
+        // Parent Vue instance
+        new Vue({
+            el: '#app',
+            data: {
+                size: 200,
+                bgColor: "transparent",
+                borderColor: "#000",
+                hourColor: "#FFF",
+                minuteColor: "#FFF",
+                secondColor: "#FFF",
+                clockOpacity: 1.0,
+                handOpacity: 1.0,
+                bgImage: 'vector-illustration-of-rose-flower.jpg', /* Default rose background */
+                currentDate: new Date()
+            },
+            computed: {
+                hourRotation() {
+                    return (360 / 12) * (this.currentDate.getHours() % 12) + (360 / 12) * (this.currentDate.getMinutes() / 60);
+                },
+                minuteRotation() {
+                    return (360 / 60) * this.currentDate.getMinutes() + (360 / 60) * (this.currentDate.getSeconds() / 60);
+                },
+                secondRotation() {
+                    return (360 / 60) * this.currentDate.getSeconds();
+                }
+            },
+            methods: {
+                updateTime() {
+                    this.currentDate = new Date();
+                }
+            },
+            mounted() {
+                setInterval(this.updateTime, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
